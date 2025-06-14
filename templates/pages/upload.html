@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload File - ONGC Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --primary: #007bff;
+        --primary-dark: #0056b3;
+        --bg: #f4f6f8;
+        --text: #333;
+        --white: #ffffff;
+        --error: #d32f2f;
+        --success: #2e7d32;
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .upload-container {
+        background-color: var(--white);
+        padding: 2.5rem 2rem;
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        color: var(--primary-dark);
+        text-align: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text);
+      }
+
+      input[type="file"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+        background-color: var(--white);
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        background-color: var(--primary);
+        color: var(--white);
+        padding: 0.85rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      button:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      .messages {
+        margin-bottom: 1.25rem;
+        padding: 1rem;
+        border-radius: 6px;
+        background-color: #ffebee;
+        color: var(--error);
+        border-left: 5px solid var(--error);
+        font-weight: 500;
+        list-style: none;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 1.75rem;
+        font-size: 0.95rem;
+      }
+
+      .footer a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="upload-container">
+      <h1>Upload a File</h1>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file">Choose File</label>
+          <input type="file" name="file" id="file" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            placeholder="Enter a short file description"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="department">Department</label>
+          <select name="department" id="department" required>
+            {% if user.role == 'group_admin' %}
+              <option value="{{ user.department }}">{{ user.department }}</option>
+            {% else %}
+              <option value="">-- Select Department --</option>
+              <option value="IT">IT</option>
+              <option value="HR">HR</option>
+              <option value="Geology">Geology</option>
+            {% endif %}
+          </select>
+        </div>
+
+        <button type="submit">Upload File</button>
+      </form>
+
+      <div class="footer">
+        <a href="{{ url_for('welcome') }}">← Back to Home</a>
+      </div>
+    </div>
+  </body>
+</html>

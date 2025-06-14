@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Verify Users</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      }
+
+      nav {
+        background-color: #333435;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
+
+      nav a:hover {
+        background-color: #656567;
+      }
+
+      .logout {
+        background-color: #dc3545;
+      }
+
+      .logout:hover {
+        background-color: #c82333;
+      }
+
+      h1 {
+        color: #333;
+        margin-top: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      th {
+        background-color: #f9fafb;
+        color: #555;
+        font-weight: 600;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+
+      tbody tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      select {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      .action-button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        font-weight: 500;
+      }
+
+      .change-button {
+        background-color: #17a2b8;
+      }
+
+      .change-button:hover {
+        background-color: #138496;
+      }
+
+      .internal-button {
+        background-color: #6c757d;
+      }
+
+      .internal-button:hover {
+        background-color: #5a6268;
+      }
+
+      form {
+        margin: 0;
+      }
+
+      .status-verified {
+        color: green;
+        font-weight: 600;
+      }
+
+      .status-not-verified {
+        color: red;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div>
+          <a href="{{ url_for('upload_file') }}">Upload Files</a>
+          <a href="{{ url_for('welcome') }}">View Files</a>
+        </div>
+        <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+      </nav>
+
+      <h1>Admin Panel - Verify Users</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Change Role</th>
+            <th>Internal Access</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ user.department }}</td>
+            <td>
+              {% if user.is_verified %}
+                <span class="status-verified"> Verified</span>
+              {% else %}
+                <span class="status-not-verified"> Not Verified</span>
+              {% endif %}
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('change_user_role') }}">
+                <input type="hidden" name="user_id" value="{{ user.id }}" />
+                <select name="role">
+                  <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+                  <option value="group_admin" {% if user.role == 'group_admin' %}selected{% endif %}>Group Admin</option>
+                  <option value="master_admin" {% if user.role == 'master_admin' %}selected{% endif %}>Master Admin</option>
+                </select>
+                <button class="action-button change-button" type="submit">Change</button>
+              </form>
+            </td>
+            <td>
+              <form method="POST" action="{{ url_for('toggle_internal_user', user_id=user.id) }}">
+                <button type="submit" class="action-button internal-button">
+                  {% if user.is_internal_user %}
+                    Set as External
+                  {% else %}
+                    Set as Internal
+                  {% endif %}
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

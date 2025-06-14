@@ -1,0 +1,8 @@
+.env
+static/uploads/
+static/images/
+users2.db
+*.db
+__pycache__/
+*.pyc
+.DS_Store

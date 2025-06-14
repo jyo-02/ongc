@@ -1,66 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      color: #333;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome - ONGC Portal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 20px;
+      }
 
-    h1 {
-      margin-bottom: 1rem;
-    }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+      }
 
-    img {
-      border-radius: 50%;
-      border: 2px solid #28a745;
-      margin-bottom: 1rem;
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-    }
+      nav {
+        background-color: #333435;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: background-color 0.3s;
+      }
 
-    a {
-      text-decoration: none;
-      background-color: #dc3545;
-      color: white;
-      padding: 0.75rem 1.25rem;
-      border-radius: 5px;
-      font-weight: 600;
-      transition: background-color 0.3s;
-    }
+      nav a:hover {
+        background-color: #656567;
+      }
 
-    a:hover {
-      background-color: #b02a37;
-    }
-  </style>
-</head>
-<body>
-  <h1>Welcome, {{ user.full_name }}!</h1>
+      .logout {
+        background-color: #dc3545;
+      }
 
-  {% if user.profile_image %}
-  <img
-    src="{{ url_for('static', filename=user.profile_image) }}"
-    alt="Profile Image"
-  />
-  {% endif %}
+      .logout:hover {
+        background-color: #c82333;
+      }
 
-  <p>You are logged in.</p>
-  <a href="/logout">Logout</a>
-</body>
+      h1 {
+        color: #333;
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .welcome-message {
+        background-color: #e9f5ff;
+        border-left: 5px solid #007bff;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .welcome-message .profile-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .profile-image {
+        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 2px solid #007bff;
+      }
+
+      .file-list {
+        background-color: #f9fafb;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      }
+
+      .file-list h2 {
+        margin-top: 0;
+        color: #333;
+      }
+
+      .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .file-item:last-child {
+        border-bottom: none;
+      }
+
+      .action-button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        font-weight: 500;
+        margin-left: 5px;
+      }
+
+      .download-button {
+        background-color: #007bff;
+        text-decoration: none;
+      }
+
+      .download-button:hover {
+        background-color: #0056b3;
+      }
+
+      .delete-button {
+        background-color: #dc3545;
+      }
+
+      .delete-button:hover {
+        background-color: #c82333;
+      }
+
+      .top-buttons {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .top-buttons a {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        margin: 0 10px;
+        transition: background-color 0.3s ease;
+      }
+
+      .top-buttons a:hover {
+        background-color: #0056b3;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 0.95rem;
+      }
+
+      .footer a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <div>
+          {% if user.role == 'master_admin' or user.role == 'group_admin' %}
+          <a href="{{ url_for('upload_file') }}">Upload Files</a>
+          {% endif %} {% if user.role == 'master_admin' %}
+          <a href="{{ url_for('dashboard') }}">Admin Dashboard</a>
+          {% endif %}
+        </div>
+        <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+      </nav>
+
+      <div class="welcome-message">
+        <div class="profile-section">
+          <img
+            src="{{ url_for('static', filename=user.profile_image) }}"
+            alt="Profile Picture"
+            class="profile-image"
+          />
+          <h1>Welcome, {{ user.full_name }}!</h1>
+        </div>
+        <p>You are now logged in. Explore the available files below.</p>
+      </div>
+
+      <div class="file-list">
+        <h2>Uploaded Files</h2>
+        {% if files %} {% for file in files %}
+        <div class="file-item">
+          <span
+            >{{ file.description }} <small>({{ file.department }})</small></span
+          >
+          <div>
+            <a
+              class="action-button download-button"
+              href="{{ url_for('download_file', file_id=file.id) }}"
+              >Download</a
+            >
+            {% if user.role == 'master_admin' or (user.role == 'group_admin' and
+            file.department == user.department) %}
+            <form
+              action="{{ url_for('delete_file', file_id=file.id) }}"
+              method="POST"
+              style="display: inline"
+            >
+              <button type="submit" class="action-button delete-button">
+                Delete
+              </button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %} {% else %}
+        <p>No files uploaded yet.</p>
+        {% endif %}
+      </div>
+
+      <div class="footer">Copyright © 2025</div>
+    </div>
+  </body>
 </html>
