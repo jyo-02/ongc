@@ -3,6 +3,8 @@ static/uploads/
 static/images/
 users2.db
 *.db
-__pycache__/
+__pycache__/*
 *.pyc
 .DS_Store
+__pycache__/models.cpython-313.pyc
+
