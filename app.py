@@ -33,7 +33,7 @@ def role_required(*roles):
             if 'user_id' not in session:
                 return redirect('/login')
             user = User.query.get(session['user_id'])
-            if user.role not in roles:  # Check if the user's role is in the allowed roles
+            if user.role not in roles:  
                 return redirect('/login')
             return f(*args, **kwargs)
         return decorated_function
@@ -102,9 +102,9 @@ def welcome():
     user = User.query.get(session['user_id'])
     
     if not user.is_internal_user:
-        return redirect(url_for('access_denied'))  # Redirect to access_denied route
+        return redirect(url_for('access_denied'))  
 
-    files = File.query.all()  # Fetch all uploaded files
+    files = File.query.all()  
     return render_template('pages/welcome.html', user=user, files=files)
 
 @app.route('/logout')
@@ -191,8 +191,8 @@ def dashboard():
         else:
             flash('User not found.')
 
-    users = User.query.all()  # Fetch all users
-    return render_template('pages/admin.html', users=users)  # Render admin.html with users
+    users = User.query.all()  
+    return render_template('pages/admin.html', users=users)  
 
 @app.route('/upload', methods=['GET', 'POST'])
 @role_required('group_admin', 'master_admin')
@@ -206,7 +206,6 @@ def upload_file():
         
         file = request.files['file']
         description = request.form['description']
-        print(f"Received description: {description}")  # Debug statement
         
         if file.filename == '':
             flash('No file selected')
