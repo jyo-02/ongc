@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload File - ONGC Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         --primary: #007bff;
@@ -18,7 +21,7 @@
       }
 
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         background-color: var(--bg);
         margin: 0;
         padding: 20px;
@@ -123,15 +126,13 @@
     <div class="upload-container">
       <h1>Upload a File</h1>
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <ul class="messages">
-            {% for message in messages %}
-              <li>{{ message }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endwith %}
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
 
       <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -154,13 +155,22 @@
           <label for="department">Department</label>
           <select name="department" id="department" required>
             {% if user.role == 'group_admin' %}
-              <option value="{{ user.department }}">{{ user.department }}</option>
+            <option value="{{ user.department }}">{{ user.department }}</option>
             {% else %}
-              <option value="">-- Select Department --</option>
-              <option value="IT">IT</option>
-              <option value="HR">HR</option>
-              <option value="Geology">Geology</option>
+            <option value="">-- Select Department --</option>
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Geology">Geology</option>
             {% endif %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select name="category" id="category" required>
+            <option value="sensitive">Sensitive</option>
+            <option value="organization">Organization</option>
+            <option value="public">Public</option>
           </select>
         </div>
 

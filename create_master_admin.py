@@ -1,5 +1,5 @@
-from app import app, db  # Adjust the import based on your app structure
-from models import User  # Import your User model
+from app import app, db  
+from models import User  
 from flask_bcrypt import Bcrypt
 
 app.app_context().push()

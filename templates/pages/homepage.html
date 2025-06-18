@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ONGC Internal Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #621519;
+      color: white;
+      padding: 30px 40px;
+      text-align: center;
+      border-bottom: 1px solid #facd47;
+    }
+    .ticker {
+      background-color: #facd47;
+      padding: 10px;
+      font-weight: 600;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 12s linear infinite;
+    }
+    .ticker:hover span {
+  animation-play-state: paused;
+}
+
+    @keyframes ticker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .carousel {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      height: 400px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      margin: 30px auto;
+    }
+    .carousel img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .carousel img.active {
+      opacity: 1;
+    }
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      margin-top: 30px;
+    }
+    .section h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #621519;
+    }
+    ul.file-list {
+      list-style: none;
+      padding: 0;
+    }
+    ul.file-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+    }
+    .file-icon {
+      width: 20px;
+      height: 20px;
+    }
+    footer {
+      text-align: left;
+      padding: 40px 60px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #621519;
+      margin-top: 40px;
+    }
+    footer h3 {
+      color: #facd47;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    }
+    .footer-grid ul {
+      list-style: none;
+      padding: 0;
+      line-height: 1.8;
+    }
+    .footer-grid a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer-grid a:hover {
+      text-decoration: underline;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .col-md-6 {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .imgWrap {
+      position: relative;
+    }
+    .imgWrap img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .imgDesc {
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    .glance {
+      margin-top: 10px;
+    }
+    .glance .head {
+      font-weight: bold;
+      color: #621519;
+    }
+    .side-by-side {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .side-section {
+      flex: 1 1 48%;
+      background: white;
+      border-radius: 12px;
+      padding: 25px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+    }
+    .side-section ul li {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .file-card {
+      background: #f9f9f9;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+    .file-card:hover {
+      transform: scale(1.02);
+    }
+    .quick-links {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      gap: 20px;
+    }
+    .quick-link-card {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      text-align: center;
+      flex: 1 1 200px;
+      transition: all 0.2s;
+    }
+    .quick-link-card:hover {
+      background-color: #e6f0ff;
+      transform: translateY(-2px);
+    }
+    .quick-link-card h3 {
+      color: #621519;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .section.explore {
+  padding: 60px 40px;
+}
+
+.section.explore h2 {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 50px;
+  color: #111;
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.explore-card {
+  background-image: var(--bg-img);
+  position: relative;
+  height: 280px; /* reduced height */
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  width: 100%; /* takes full column width */
+}
+
+.explore-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+}
+
+.explore-content {
+  width: 100%;
+  padding: 20px 24px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  backdrop-filter: blur(5px);
+}
+
+.explore-content h4 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.explore-content p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+    @media (max-width: 600px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .gallery {
+      margin-top: 40px;
+    }
+    .gallery h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #621519;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      height: 200px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    button:hover {
+      transform: scale(1.05);
+    }
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 51, 102, 0.5);
+    }
+    .gallery-heading {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 0 16px;
+}
+
+.gallery-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.card-caption {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  color: white;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: background 0.3s ease;
+}
+
+.card-caption h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-caption p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px);
+}
+
+.gallery-card:hover img {
+  transform: scale(1.05);
+  filter: brightness(80%);
+}
+
+.gallery-card:hover .card-caption {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Navbar Container */
+.navbar {
+  background-color: #621519;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+/* Menu Links */
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 4px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  position: relative;
+}
+
+
+.nav-menu a:hover {
+  background-color: #621519;
+  border-radius: 5px;
+}
+/* Dropdown Container */
+.dropdown {
+  position: relative;
+}
+
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  display: none;
+  background-color: #621519;
+  list-style: none;
+  padding: 8px 0;
+  min-width: 200px;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+
+.dropdown:hover .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+.dropdown-menu li {
+  width: 100%;
+}
+
+
+.dropdown-menu a {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: white;
+  font-size: 15px;
+  text-decoration: none;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+
+.dropdown-menu a:hover {
+  background-color: #3b1012;
+}
+
+.nav-menu a:visited {
+  color: white;
+}
+.main-header {
+  background-color: #621519;
+  color: white;
+  padding: 60px 40px;
+  position: relative;
+  text-align: center;
+}
+
+.header-container {
+  position: relative;
+}
+
+.org-logo {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+
+.text-block {
+  display: inline-block;
+}
+
+.text-block h1 {
+  margin: 0;
+  font-size: 38px;
+}
+
+.text-block p {
+  margin: 4px 0 0;
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+  </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+          <img src="{{ url_for('static', filename='images/ongcLogo.png') }}" alt="ONGC Logo" class="org-logo">
+          <div class="text-block">
+            <h1>ONGC Internal Portal</h1>
+            <p>Welcome to your centralized work dashboard</p>
+          </div>
+        </div>
+      </header>
+      
+      
+      
+
+  <!-- 🌐 NAVBAR HTML -->
+<nav class="navbar">
+    <ul class="nav-menu">
+      <li><a href="#">Home</a></li>
+  
+      <li class="dropdown">
+        <a href="#">Departments ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Exploration</a></li>
+          <li><a href="#">Production</a></li>
+          <li><a href="#">Safety & Compliance</a></li>
+        </ul>
+      </li>
+  
+      <li class="dropdown">
+        <a href="#">Resources ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Policies</a></li>
+          <li><a href="#">Forms</a></li>
+          <li><a href="#">Training</a></li>
+        </ul>
+      </li>
+  
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  
+  
+
+  <body>
+    <!-- Login/Register buttons -->
+    <div style="position: absolute; top: 20px; right: 40px; z-index: 1000;">
+      <a href="{{ url_for('login') }}" style="margin-right: 10px;">
+        <button style="padding: 12px 24px; background-color: #621519; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.2s; font-size: 16px;">
+          Login
+        </button>
+      </a>
+      <a href="{{ url_for('register') }}">
+        <button style="padding: 12px 24px; background-color: #facd47; color: #621519; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.2s; font-size: 16px;">
+          Register
+        </button>
+      </a>
+    </div>
+  
+
+    <div class="ticker">
+        <span>
+          {# Show Announcements from DB #}
+          {% for announcement in announcements %}
+            📣
+            {% if announcement.link %}
+              <a href="{{ announcement.link }}" target="_blank" style="text-decoration: underline; color: inherit;">
+                {{ announcement.message }}
+              </a>
+            {% else %}
+              {{ announcement.message }}
+            {% endif %}
+            &nbsp; • &nbsp;
+          {% endfor %}
+      
+          {# Show Public Files #}
+          {% set public_files = files | selectattr('category', 'equalto', 'public') | list %}
+          {% for file in public_files %}
+            📎 <a href="{{ file.filepath }}" download target="_blank" style="text-decoration: underline; color: inherit;">
+              {{ file.description or file.filename }}
+            </a>
+            &nbsp; • &nbsp;
+          {% endfor %}
+        </span>
+      </div>
+      
+      
+
+  <div class="container">
+    <div class="carousel">
+        <img src="{{ url_for('static', filename='images/carousal.jpg') }}" class="active" alt="Slide 1">
+        
+        <img src="{{ url_for('static', filename='images/car3.webp') }}" class="active" alt="Slide 1">
+        <img src="{{ url_for('static', filename='images/car4.jpg') }}" class="active" alt="Slide 1">
+        <img src="{{ url_for('static', filename='images/car5.avif') }}" class="active" alt="Slide 1">
+
+      </div>
+
+      
+    
+      <script>
+        const images = document.querySelectorAll('.carousel img');
+        let index = 0;
+        setInterval(() => {
+          images[index].classList.remove('active');
+          index = (index + 1) % images.length;
+          images[index].classList.add('active');
+        }, 2000); 
+      </script>
+
+    <div class="side-by-side">
+      <div class="side-section">
+        <h2>Latest Announcements</h2>
+        <ul class="file-list">
+          {% set public_files = files | selectattr('category', 'equalto', 'public') | list %}
+          {% if public_files|length > 0 %}
+            {% for file in public_files %}
+            <li class="file-card">
+                <a href="{{ file.filepath }}" download style="text-decoration: none; color: inherit;">
+                  <img class="file-icon" src="https://cdn-icons-png.flaticon.com/512/337/337946.png" style="vertical-align: middle; width: 20px; margin-right: 8px;">
+                  {{ file.description }}
+                </a>
+              </li>
+              
+            {% endfor %}
+          {% else %}
+            <li>No public files available.</li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="side-section">
+        <h2>Top Stories</h2>
+        <ul class="file-list">
+          <li>ONGC achieves record oil output in Q1 2025</li>
+          <li>New deep-sea exploration site announced off west coast</li>
+          <li>Digital transformation drive launches new AI-based monitoring system</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section gallery">
+        <h2 class="gallery-heading">Offshore & Oilfield Operations – June 2025 Updates</h2>
+        <div class="gallery-grid">
+          <a href="{{ url_for('static', filename='images/pic1.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic1.jpg') }}" alt="Oilfield Operations">
+            <div class="card-caption">
+              <h3>Rig Expansion in KG Basin</h3>
+              <p>Phase-II of the drilling operation adds 2 new jack-up rigs to accelerate offshore exploration.</p>
+            </div>
+          </a>
+      
+          <a href="{{ url_for('static', filename='images/pic2.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic2.jpg') }}" alt="Engineering">
+            <div class="card-caption">
+              <h3>Subsea Cable Laying</h3>
+              <p>High-voltage cable trenching and insulation underway using ROVs in deepwater zones.</p>
+            </div>
+          </a>
+      
+          <a href="{{ url_for('static', filename='images/pic3.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic3.jpg') }}" alt="Teamwork">
+            <div class="card-caption">
+              <h3>Integrated Safety Drills</h3>
+              <p>All-hands safety training conducted with cross-functional teams at offshore floaters.</p>
+            </div>
+          </a>
+      
+          <a href="{{ url_for('static', filename='images/pic4.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic4.jpg') }}" alt="Energy Sector">
+            <div class="card-caption">
+              <h3>Offshore Wind-Tie Line</h3>
+              <p>New hybrid platform integrates wind energy into traditional offshore energy grid.</p>
+            </div>
+          </a>
+          <a href="{{ url_for('static', filename='images/pic5.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic5.jpg') }}" alt="Engineering">
+            <div class="card-caption">
+              <h3>Subsea Cable Laying</h3>
+              <p>High-voltage cable trenching and insulation underway using ROVs in deepwater zones.</p>
+            </div>
+          </a>
+          <a href="{{ url_for('static', filename='images/pic6.jpg') }}" target="_blank" class="gallery-card">
+            <img src="{{ url_for('static', filename='images/pic6.jpg') }}" alt="Engineering">
+            <div class="card-caption">
+              <h3>Subsea Cable Laying</h3>
+              <p>High-voltage cable trenching and insulation underway using ROVs in deepwater zones.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+    
+      <div class="section explore">
+        <h2>Explore Us</h2>
+        <div class="explore-grid">
+          <div class="explore-card" style="--bg-img: url('{{ url_for('static', filename='images/epl1.jpg') }}');">
+            <div class="explore-content">
+              <h4>Our Mission</h4>
+              <p>Driving energy security through sustainable and innovative practices.</p>
+            </div>
+          </div>
+      
+          <div class="explore-card" style="--bg-img: url('{{ url_for('static', filename='images/epl2.jpg') }}');">
+            <div class="explore-content">
+              <h4>Our People</h4>
+              <p>Empowering a talented and diverse workforce committed to excellence.</p>
+            </div>
+          </div>
+      
+          <div class="explore-card" style="--bg-img: url('{{ url_for('static', filename='images/epl3.webp') }}');">
+            <div class="explore-content">
+              <h4>Innovation</h4>
+              <p>Harnessing technology to optimize exploration and production efforts.</p>
+            </div>
+          </div>
+      
+          <div class="explore-card" style="--bg-img: url('{{ url_for('static', filename='images/epl4.webp') }}');">
+            <div class="explore-content">
+              <h4>Sustainability</h4>
+              <p>Promoting environmental stewardship in all our operations across the world.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+  
+      
+      
+      <div class="quick-links">
+        <div class="quick-link-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" width="50" />
+          <h3>Employee Directory</h3>
+        </div>
+        <div class="quick-link-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/711/711769.png" width="50" />
+          <h3>Document Repository</h3>
+        </div>
+        <div class="quick-link-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/456/456212.png" width="50" />
+          <h3>Leave Management</h3>
+        </div>
+        <div class="quick-link-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" width="50" />
+          <h3>HR Services</h3>
+        </div>
+      </div>
+  
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <h3>Other Links</h3>
+        <ul>
+          <li><a href="#">Sitemap</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Disclaimer</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Reach Us</h3>
+        <ul>
+          <li>Registered Office:</li>
+          <li>Plot No. 5A-5B Nelson Mandela Road,<br>Vasant Kunj, New Delhi, 110070</li>
+          <li>CIN: L74899DL1993GOI054155</li>
+          <li>Phone: 011-26750998</li>
+          <li>Fax: 011-26750991 / 26129091</li>
+          <li><a href="https://grievance.ongc.co.in" target="_blank">ONGC Grievance Portal</a></li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 30px;">&copy; {{ current_year }} ONGC Intranet. All rights reserved.</p>
+  </footer>
+</body>
+</html>

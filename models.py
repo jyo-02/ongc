@@ -12,7 +12,7 @@ class User(db.Model):
     is_verified = Column(Boolean, default=False)
     role = Column(String(50), default='user')
     department = Column(String(50))
-    is_internal_user = Column(Boolean, default=False)
+    is_valid_user = Column(Boolean, default=False)
 
     def __repr__(self):
         return f'<User {self.full_name}>'
@@ -25,3 +25,9 @@ class File(db.Model):
     department = Column(String(50))
     upload_date = Column(db.DateTime, default=db.func.current_timestamp())
     description = db.Column(db.String(120))
+    category = db.Column(db.String(50), nullable=False)
+
+class Announcement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.String(255), nullable=False)
+    link = db.Column(db.String(255), nullable=True)

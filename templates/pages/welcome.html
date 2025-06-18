@@ -182,14 +182,16 @@
       <nav>
         <div>
           {% if user.role == 'master_admin' or user.role == 'group_admin' %}
-          <a href="{{ url_for('upload_file') }}">Upload Files</a>
-          {% endif %} {% if user.role == 'master_admin' %}
-          <a href="{{ url_for('dashboard') }}">Admin Dashboard</a>
+            <a href="{{ url_for('upload_file') }}">Upload Files</a>
+            <a href="{{ url_for('manage_announcements') }}">Announcements</a>
+          {% endif %}
+          {% if user.role == 'master_admin' %}
+            <a href="{{ url_for('dashboard') }}">Admin Dashboard</a>
           {% endif %}
         </div>
         <a class="logout" href="{{ url_for('logout') }}">Logout</a>
       </nav>
-
+      
       <div class="welcome-message">
         <div class="profile-section">
           <img

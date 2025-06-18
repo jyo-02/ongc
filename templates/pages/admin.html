@@ -155,7 +155,7 @@
             <th>Department</th>
             <th>Status</th>
             <th>Change Role</th>
-            <th>Internal Access</th>
+            <th>Valid Access</th>
           </tr>
         </thead>
         <tbody>
@@ -172,6 +172,7 @@
                 <span class="status-not-verified"> Not Verified</span>
               {% endif %}
             </td>
+            
             <td>
               <form method="POST" action="{{ url_for('change_user_role') }}">
                 <input type="hidden" name="user_id" value="{{ user.id }}" />
@@ -184,12 +185,12 @@
               </form>
             </td>
             <td>
-              <form method="POST" action="{{ url_for('toggle_internal_user', user_id=user.id) }}">
+              <form method="POST" action="{{ url_for('toggle_valid_user', user_id=user.id) }}">
                 <button type="submit" class="action-button internal-button">
-                  {% if user.is_internal_user %}
-                    Set as External
+                  {% if user.is_valid_user %}
+                    Set as Invalid
                   {% else %}
-                    Set as Internal
+                    Set as Valid
                   {% endif %}
                 </button>
               </form>
