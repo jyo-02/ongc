@@ -43,7 +43,7 @@
       100% { transform: translateX(-100%); }
     }
     .container {
-      max-width: 1200px;
+      max-width: 1350px;
       margin: 0 auto;
       padding: 0 20px;
     }
@@ -53,7 +53,7 @@
       max-width: 100%;
       height: 400px;
       overflow: hidden;
-      border-radius: 10px;
+      border-radius: 0;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       margin: 30px auto;
     }
@@ -591,13 +591,13 @@
       
       
 
-  <div class="container">
+  
     <div class="carousel">
         <img src="{{ url_for('static', filename='images/carousal.jpg') }}" class="active" alt="Slide 1">
         
         <img src="{{ url_for('static', filename='images/car3.webp') }}" class="active" alt="Slide 1">
         <img src="{{ url_for('static', filename='images/car4.jpg') }}" class="active" alt="Slide 1">
-        <img src="{{ url_for('static', filename='images/car5.avif') }}" class="active" alt="Slide 1">
+        <img src="{{ url_for('static', filename='images/car5.jpg') }}" class="active" alt="Slide 1">
 
       </div>
 
@@ -612,7 +612,7 @@
           images[index].classList.add('active');
         }, 2000); 
       </script>
-
+<div class="container">
     <div class="side-by-side">
       <div class="side-section">
         <h2>Latest Announcements</h2>
