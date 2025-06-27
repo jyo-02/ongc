@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Records</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 2rem;
+        color: #2c3e50;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        color: #1a1a1a;
+      }
+
+      .button-container {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .btn-back {
+        background-color: #007bff;
+        color: #fff;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .btn-back:hover {
+        background-color: #0056b3;
+      }
+
+      .table-container {
+        overflow-x: auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin: 0 auto;
+        max-width: 800px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 400px;
+      }
+
+      thead {
+        background-color: #343a40;
+        color: #fff;
+      }
+
+      th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      
+
+      .empty-message {
+        text-align: center;
+        margin-top: 2rem;
+        font-style: italic;
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Login Records</h1>
+
+    <div class="button-container">
+      <a href="{{ url_for('welcome') }}" class="btn-back">← Back to Dashboard</a>
+    </div>
+
+    {% if records %}
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+          <tr>
+            <td>{{ record.user_id }}</td>
+            <td>{{ record.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty-message">No login records found.</p>
+    {% endif %}
+  </body>
+</html>

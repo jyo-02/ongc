@@ -24,4 +24,4 @@ def send_verification_email(recipient, otp):
     try:
         mail.send(msg)
     except Exception as e:
-        print(f"Failed to send email: {e}")  # Handle the error appropriately
+        print(f"Failed to send email: {e}") 

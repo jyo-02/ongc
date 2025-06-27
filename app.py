@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, session, flash, url
 from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
-from models import db, User, File, Announcement
+from models import db, User, File, Announcement, LoginRecord
 from mail_utils import init_mail, send_verification_email
 import random
 from datetime import datetime
@@ -61,36 +61,38 @@ def can_delete_file(file, user):
 #     return render_template("pages/homepage.html", current_year=datetime.now().year)
 @app.route('/')
 def homepage():
-    
     announcements = Announcement.query.order_by(Announcement.id.desc()).all()
-
-    
     files = File.query.filter_by(category='public').all()
 
     
-    ticker_items = []
+    carousel_images = os.listdir(os.path.join('static', 'images', 'carousal', 'show'))
 
-    
+    ticker_items = []
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.get(user_id)
+    else:
+        user = None
+
     for ann in announcements:
         if ann.link:
             ticker_items.append(f'<a href="{ann.link}" target="_blank">{ann.message}</a>')
         else:
             ticker_items.append(ann.message)
 
-    
     for file in files:
         desc = file.description or file.filename
         ticker_items.append(f'<a href="{file.filepath}" download>{desc}</a>')
 
-    
-    carousel_images = ["carousel1.jpg", "carousel2.jpg", "carousel3.jpg"]
+    carousel_images = [img for img in carousel_images if img.endswith(('.jpg', '.jpeg', '.png', '.webp'))]  
 
     return render_template(
         "pages/homepage.html",
         ticker_items=ticker_items,
         carousel_images=carousel_images,
         files=files,
-        announcements=announcements
+        announcements=announcements,
+        user=user
     )
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -138,7 +140,11 @@ def login():
                 flash('Please verify your email before logging in.')
                 return redirect('/login')
             session['user_id'] = user.id
-            return redirect('/welcome')
+
+            login_record = LoginRecord(user_id=user.id)
+            db.session.add(login_record)
+            db.session.commit()
+            return redirect('/')
         flash('Login failed. Check your email and password.')
     return render_template('pages/login.html')
 
@@ -281,7 +287,14 @@ def upload_file():
 
         if file:
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            # Determine the upload folder based on file type
+            if file.content_type.startswith('image/'):
+                upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'images')
+            else:
+                upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'documents')
+
+            os.makedirs(upload_folder, exist_ok=True)  # Create the folder if it doesn't exist
+            filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
             department = request.form['department']
@@ -404,6 +417,11 @@ def delete_announcement(announcement_id):
     db.session.commit()
     return redirect(url_for('manage_announcements'))
 
+@app.route('/login_records')
+@role_required('master_admin')  # Assuming only admins can view this
+def login_records():
+    records = LoginRecord.query.all()
+    return render_template('pages/login_records.html', records=records)
 
 if __name__ == '__main__':
     with app.app_context():

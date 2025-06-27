@@ -27,7 +27,7 @@
 
       nav {
         background-color: #333435;
-        padding: 15px;
+        padding: 27px;
         border-radius: 8px;
         margin-bottom: 30px;
         display: flex;
@@ -43,6 +43,7 @@
         border-radius: 6px;
         font-weight: 500;
         transition: background-color 0.3s;
+        margin: 0 5px
       }
 
       nav a:hover {
@@ -51,6 +52,9 @@
 
       .logout {
         background-color: #dc3545;
+      }
+      .homey {
+        background-color: #0f5889;
       }
 
       .logout:hover {
@@ -182,16 +186,27 @@
       <nav>
         <div>
           {% if user.role == 'master_admin' or user.role == 'group_admin' %}
-            <a href="{{ url_for('upload_file') }}">Upload Files</a>
-            <a href="{{ url_for('manage_announcements') }}">Announcements</a>
+          <a href="{{ url_for('upload_file') }}">Upload Files</a>
+          <a href="{{ url_for('manage_announcements') }}">Announcements</a>
+          {% endif %} {% if user.role == 'master_admin' %}
+          <a href="{{ url_for('dashboard') }}">Admin Dashboard</a>
           {% endif %}
           {% if user.role == 'master_admin' %}
-            <a href="{{ url_for('dashboard') }}">Admin Dashboard</a>
-          {% endif %}
+        <a href="{{ url_for('login_records') }}">
+            
+                Login Records
+           
+        </a>
+   
+{% endif %}
         </div>
-        <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+        <div>
+
+          <a class="homey" href="{{ url_for('homepage') }}">Homepage</a>
+          <a class="logout" href="{{ url_for('logout') }}">Logout</a>
+        </div>
       </nav>
-      
+
       <div class="welcome-message">
         <div class="profile-section">
           <img
