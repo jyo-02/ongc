@@ -158,7 +158,7 @@ def welcome():
     if not user.is_valid_user:
         return redirect(url_for('access_denied'))
 
-    all_files = File.query.all()
+    all_files = File.query.order_by(File.upload_date.desc()).all()  
     visible_files = [file for file in all_files if can_user_access_file(file, user)]
 
     return render_template('pages/welcome.html', user=user, files=visible_files)
@@ -322,6 +322,10 @@ def upload_file():
 def delete_file(file_id):
     file = File.query.get_or_404(file_id)
     user = User.query.get(session['user_id'])
+
+    if file.category == 'sensitive' and user.role == 'master_admin':
+        return redirect(url_for('welcome', message='Only department group admins are allowed to delete this file.'))
+
 
     if can_delete_file(file, user):
         try:
