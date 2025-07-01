@@ -3,7 +3,7 @@ ONGC Internal Portal & File Management System
 Prerequisites
 
 - Ensure Python is installed on the offline system.
-- Ensure you have the `packages` folder containing all required dependencies.
+- Ensure you have the packages folder containing all required dependencies.
 - Ensure you have users.db file
 
 Steps to Run the Application

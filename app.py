@@ -34,7 +34,7 @@ def role_required(*roles):
         def decorated_function(*args, **kwargs):
             if 'user_id' not in session:
                 return redirect('/login')
-            user = User.query.get(session['user_id'])
+            user = db.session.get(User, session['user_id'])
             if user.role not in roles:
                 return redirect('/login')
             return f(*args, **kwargs)
@@ -70,7 +70,7 @@ def homepage():
     ticker_items = []
     user_id = session.get('user_id')
     if user_id:
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
     else:
         user = None
 
@@ -104,7 +104,7 @@ def register():
         department = request.form['department']
         profile_image = request.files['profile_image']
 
-        existing_user = User.query.filter_by(email=email).first()
+        existing_user = db.session.query(User).filter_by(email=email).first()
         if existing_user:
             flash('Email already registered. Please use a different email.')
             return redirect(url_for('register'))
@@ -134,7 +134,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = db.session.query(User).filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
             if not user.is_verified:
                 flash('Please verify your email before logging in.')
@@ -153,7 +153,7 @@ def welcome():
     if 'user_id' not in session:
         return redirect('/login')
 
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
 
     if not user.is_valid_user:
         return redirect(url_for('access_denied'))
@@ -174,7 +174,7 @@ def verify_otp():
     if request.method == 'POST':
         entered_otp = request.form['otp']
         user_id = session.get('user_id')
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
 
         if str(session.get('otp')) == entered_otp:
             user.is_verified = True
@@ -189,7 +189,7 @@ def verify_otp():
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
-        user = User.query.filter_by(email=email).first()
+        user = db.session.query(User).filter_by(email=email).first()
         if user:
             otp = random.randint(100000, 999999)
             session['otp'] = otp
@@ -208,7 +208,7 @@ def reset_password():
     if request.method == 'POST':
         new_password = request.form['new_password']
         user_id = session.get('user_id')
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
 
         if user:
             hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
@@ -223,7 +223,7 @@ def verify_forgot_password_otp():
     if request.method == 'POST':
         entered_otp = request.form['otp']
         user_id = session.get('user_id')
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
 
         if str(session.get('otp')) == entered_otp:
             flash('OTP verified successfully! You can now reset your password.')
@@ -235,12 +235,12 @@ def verify_forgot_password_otp():
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    if 'user_id' not in session or not User.query.get(session['user_id']).role == 'master_admin':
+    if 'user_id' not in session or not db.session.get(User, session['user_id']).role == 'master_admin':
         return redirect('/login')
 
     query = User.query
 
-    # Search filter
+    # Search filter - NOT Implemented
     search_name = request.args.get('search_name')
     if search_name:
         query = query.filter(User.full_name.ilike(f'%{search_name}%'))
@@ -270,7 +270,7 @@ def dashboard():
 @app.route('/upload', methods=['GET', 'POST'])
 @role_required('group_admin', 'master_admin')
 def upload_file():
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
 
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -287,13 +287,12 @@ def upload_file():
 
         if file:
             filename = secure_filename(file.filename)
-            # Determine the upload folder based on file type
             if file.content_type.startswith('image/'):
                 upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'images')
             else:
                 upload_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'documents')
 
-            os.makedirs(upload_folder, exist_ok=True)  # Create the folder if it doesn't exist
+            os.makedirs(upload_folder, exist_ok=True)  
             filepath = os.path.join(upload_folder, filename)
             file.save(filepath)
 
@@ -321,7 +320,7 @@ def upload_file():
 @role_required('group_admin', 'master_admin')
 def delete_file(file_id):
     file = File.query.get_or_404(file_id)
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
 
     if file.category == 'sensitive' and user.role == 'master_admin':
         return redirect(url_for('welcome', message='Only department group admins are allowed to delete this file.'))
@@ -344,13 +343,13 @@ def delete_file(file_id):
 
 @app.route('/admin/change_user_role', methods=['POST'])
 def change_user_role():
-    if 'user_id' not in session or not User.query.get(session['user_id']).role == 'master_admin':
+    if 'user_id' not in session or not db.session.get(User, session['user_id']).role == 'master_admin':
         return redirect('/login')
 
     user_id = request.form['user_id']
     new_role = request.form['role']
 
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if user:
         user.role = new_role
         db.session.commit()
@@ -371,7 +370,7 @@ def download_file(file_id):
         return redirect('/login')
 
     file = File.query.get_or_404(file_id)
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
 
     if can_user_access_file(file, user):
         return send_file(file.filepath, as_attachment=True)
@@ -382,7 +381,7 @@ def download_file(file_id):
 @app.route('/admin/toggle_valid_user/<int:user_id>', methods=['POST'])
 @role_required('master_admin')
 def toggle_valid_user(user_id):
-    user = User.query.get_or_404(user_id)
+    user = db.session.get(User, user_id)
     user.is_valid_user = not user.is_valid_user
     db.session.commit()
     flash(f'User {user.full_name} is now {"valid" if user.is_valid_user else "invalid"}.')
@@ -393,7 +392,7 @@ def access_denied():
     if 'user_id' not in session:
         return redirect('/login')
 
-    user = User.query.get(session['user_id'])
+    user = db.session.get(User, session['user_id'])
     return render_template('pages/access_denied.html', user=user)
 
 def get_announcements():
@@ -422,7 +421,7 @@ def delete_announcement(announcement_id):
     return redirect(url_for('manage_announcements'))
 
 @app.route('/login_records')
-@role_required('master_admin')  # Assuming only admins can view this
+@role_required('master_admin')  
 def login_records():
     records = LoginRecord.query.all()
     return render_template('pages/login_records.html', records=records)

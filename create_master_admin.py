@@ -5,7 +5,6 @@ from flask_bcrypt import Bcrypt
 app.app_context().push()
 bcrypt = Bcrypt(app)
 
-# Create a master admin user
 def create_master_admin():
     master_admin_email = 'admin@gmail.com'  
     master_admin_password = '12345'  

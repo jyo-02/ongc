@@ -6,7 +6,7 @@
     <title>Login Records</title>
     <style>
       body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f4f6f8;
         margin: 0;
         padding: 2rem;
@@ -61,13 +61,12 @@
         color: #fff;
       }
 
-      th, td {
+      th,
+      td {
         padding: 1rem;
         text-align: left;
         border-bottom: 1px solid #dee2e6;
       }
-
-      
 
       .empty-message {
         text-align: center;
@@ -81,7 +80,9 @@
     <h1>Login Records</h1>
 
     <div class="button-container">
-      <a href="{{ url_for('welcome') }}" class="btn-back">← Back to Dashboard</a>
+      <a href="{{ url_for('welcome') }}" class="btn-back"
+        >← Back to Dashboard</a
+      >
     </div>
 
     {% if records %}
@@ -90,6 +91,7 @@
         <thead>
           <tr>
             <th>User ID</th>
+            <th>Action</th>
             <th>Timestamp</th>
           </tr>
         </thead>
@@ -97,6 +99,7 @@
           {% for record in records %}
           <tr>
             <td>{{ record.user_id }}</td>
+            <td>{{ record.action }}</td>
             <td>{{ record.timestamp }}</td>
           </tr>
           {% endfor %}
@@ -108,5 +111,3 @@
     {% endif %}
   </body>
 </html>
-
-
