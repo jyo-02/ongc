@@ -53,6 +53,7 @@ Notes :
 Existing Users
 
 Below are the users already present in the database:
+(Password for all users is 12345)
 
 | Email                  | Role              |
 | ---------------------  | --------------    |
